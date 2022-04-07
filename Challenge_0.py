@@ -10,6 +10,7 @@
 # - Múltiplos de 3 y de 5 a la vez por la palabra "fizzbuzz".
 
 
+# Función para imprimir los números del 1 al 100 (ambos incluidos) y si es múltipo de 3 imprimir "fizz", si es múltiplo de 5 imprimir "buzz" y si es múltiplo de 3 y 5 imprimir "fizzbuzz"
 def fizzbuzz():
     try:
         for number in range(1, 101):
@@ -26,4 +27,5 @@ def fizzbuzz():
 
 
 if __name__ == '__main__':
+    # Función para imprimir los números del 1 al 100 (ambos incluidos) y si es múltipo de 3 imprimir "fizz", si es múltiplo de 5 imprimir "buzz" y si es múltiplo de 3 y 5 imprimir "fizzbuzz"
     fizzbuzz()
