@@ -13,12 +13,15 @@
 # Función para calcular y retornar el área de un polígono
 def calc_area(base=None, height=None, side=None, length=None, width=None):
     try:
+        # Verifica que el polígono seleccionado es el triángulo y calcula el área
         if base is not None and height is not None:
             return (base * height) / 2
 
+        # Verifica que el polígono seleccionado es el cuadrado y calcula el área
         elif side is not None:
             return side * side
 
+        # Verifica que el polígono seleccionado es el rectángulo y calcula el área
         elif length is not None and width is not None:
             return length * width
 
