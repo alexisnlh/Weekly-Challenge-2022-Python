@@ -3,7 +3,18 @@ from PIL import Image
 from io import BytesIO
 import math
 
+# Reto #5
+# Aspect ratio de una imagen
+# Fecha publicación enunciado: 01/02/22
+# Fecha publicación resolución: 07/02/22
+# Dificultad: DIFÍCIL
+
+# Enunciado: Crea un programa que se encargue de calcular el aspect ratio de una imagen a partir de una url.
+# - Url de ejemplo: https://raw.githubusercontent.com/mouredev/mouredev/master/mouredev_github_profile.png
+# - Por ratio hacemos referencia por ejemplo a los "16:9" de una imagen de 1920*1080px.
+
 url = "https://raw.githubusercontent.com/mouredev/mouredev/master/mouredev_github_profile.png"
+
 
 # Función para obtener las dimensiones de la imagen importada por URL
 def rationalAspectRatio():
