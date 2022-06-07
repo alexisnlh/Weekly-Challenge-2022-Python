@@ -11,16 +11,14 @@
 def decimalToBinary(input_string):
     try:
         pass
-#         number = int(input_string)
-#         binary = str()
-#
-#         while number != 0:
-#             reminder = number % 2
-#             print(reminder)
-#             number = number / 2
-#             binary = str(reminder) + binary
-#             # print(binary)
-#         return binary
+        number = int(input_string)
+        binary = str()
+
+        while number > 0:
+            reminder = number % 2
+            number //= 2
+            binary = str(reminder) + binary
+        return binary if int(input_string) > 0 else 0
     except Exception as error:
         print("Exception: {}".format(error))
 
@@ -30,10 +28,9 @@ if __name__ == '__main__':
         try:
             input_string = input("Introduzca un número decimal, distinto de cero y presione ENTER: \n")
             input_string = input_string.rstrip().lstrip()
-            if input_string != "" and input_string != "0":
-                print("ENTRA")
+            if input_string != "":
                 # Función para contar las veces que se repite cada palabra
-                decimalToBinary(input_string)
+                print(f"El binario del número decimal {input_string} es: {decimalToBinary(input_string)}")
                 break
             else:
                 opcion = input("No se introdujo una cadena de texto válida. Desea continuar? (Y/N)\n").lower()
