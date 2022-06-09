@@ -1,5 +1,5 @@
 # Reto #9
-# CÓDIGO MORSE
+# Código Morse
 # Fecha publicación enunciado: 02/03/22
 # Fecha publicación resolución: 07/03/22
 # Dificultad: MEDIA
