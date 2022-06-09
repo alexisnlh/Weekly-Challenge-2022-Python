@@ -57,6 +57,7 @@ naturalDict = {
         }
 
 
+# Función para transformar texto natural a código morse y viceversa
 def decoder(input_string):
     try:
         morseText_list = list()
@@ -115,7 +116,7 @@ if __name__ == '__main__':
         try:
             input_string = input("Introduzca la cadena de texto o código morse a transformar y presione ENTER: \n")
             if input_string != "":
-                # Función para contar las veces que se repite cada palabra
+                # Función para transformar texto natural a código morse y viceversa
                 result, morse, morseText = decoder(input_string)
                 if result:
                     if morse:
