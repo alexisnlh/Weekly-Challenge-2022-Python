@@ -10,7 +10,6 @@
 # Función para contar las veces que se repite cada palabra
 def decimalToBinary(input_string):
     try:
-        pass
         number = int(input_string)
         binary = str()
 
