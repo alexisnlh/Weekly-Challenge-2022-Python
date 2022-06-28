@@ -24,7 +24,8 @@ def isArmstrong(input_string):
 
 
 if __name__ == '__main__':
-    while True:
+    flag_continue = True
+    while flag_continue:
         try:
             input_string = input("Introduzca el número para verificar si es un número Armstrong (o también llamado narcisista), y presione ENTER: \n")
             input_string = input_string.rstrip().lstrip()
@@ -36,14 +37,29 @@ if __name__ == '__main__':
                         print(f"El número ingresado ({input_string}) es un número Armstrong.")
                     else:
                         print(f"El número ingresado ({input_string}) no es un número Armstrong.")
+                    break
                 else:
                     print(f"El número Armstrong del dígito ingresado, {input_string}, no se puede obtener. El número debe ser mayor o igual a cero.")
-                break
+                    while True:
+                        opcion = input("No se introdujo un texto válido. Desea continuar? (Y/N)\n").lower()
+                        if opcion == "y" or "yes" in opcion:
+                            break
+                        elif opcion == "n" or "no" in opcion:
+                            flag_continue = False
+                            break
             else:
-                opcion = input("No se introdujo un texto válido. Desea continuar? (Y/N)\n").lower()
-                if opcion == "n" or "no" in opcion:
-                    break
+                while True:
+                    opcion = input("No se introdujo un texto válido. Desea continuar? (Y/N)\n").lower()
+                    if opcion == "y" or "yes" in opcion:
+                        break
+                    elif opcion == "n" or "no" in opcion:
+                        flag_continue = False
+                        break
         except:
-            opcion = input("No se introdujo un texto válido. Desea continuar? (Y/N)\n").lower()
-            if opcion == "n" or "no" in opcion:
-                break
+            while True:
+                opcion = input("No se introdujo un texto válido. Desea continuar? (Y/N)\n").lower()
+                if opcion == "y" or "yes" in opcion:
+                    break
+                elif opcion == "n" or "no" in opcion:
+                    flag_continue = False
+                    break
