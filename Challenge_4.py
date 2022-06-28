@@ -30,7 +30,8 @@ def calc_area(base=None, height=None, side=None, length=None, width=None):
 
 
 if __name__ == '__main__':
-    while True:
+    flag_continue = True
+    while flag_continue:
         try:
             opcion = int(input("Introduzca qué polígono seleccionar (1, 2 o 3) y presione ENTER:\n1. Triángulo\n2. Cuadrado\n3. Rectángulo\n"))
 
@@ -64,10 +65,18 @@ if __name__ == '__main__':
                 break
 
             else:
-                opcion = input("No seleccionaste una opción válida. Desea continuar? (Y/N)\n").lower()
-                if opcion == "n" or "no" in opcion:
-                    break
+                while True:
+                    opcion = input("No seleccionaste una opción válida. Desea continuar? (Y/N)\n").lower()
+                    if opcion == "y" or "yes" in opcion:
+                        break
+                    elif opcion == "n" or "no" in opcion:
+                        flag_continue = False
+                        break
         except:
-            opcion = input("No seleccionaste una opción válida. Desea continuar? (Y/N)\n").lower()
-            if opcion == "n" or "no" in opcion:
-                break
+            while True:
+                opcion = input("No seleccionaste una opción válida. Desea continuar? (Y/N)\n").lower()
+                if opcion == "y" or "yes" in opcion:
+                    break
+                elif opcion == "n" or "no" in opcion:
+                    flag_continue = False
+                    break
