@@ -22,7 +22,8 @@ def factorial(input_string):
 
 
 if __name__ == '__main__':
-    while True:
+    flag_continue = True
+    while flag_continue:
         try:
             input_string = input("Introduzca el número para calcular el factorial, y presione ENTER: \n")
             input_string = input_string.rstrip().lstrip()
@@ -31,14 +32,29 @@ if __name__ == '__main__':
                 result = factorial(input_string)
                 if result is not None:
                     print(f"El factorial del número ingresado, {input_string}, es: {result}")
+                    break
                 else:
                     print(f"El factorial del número ingresado, {input_string}, no se puede obtener. El número debe ser mayor a cero.")
-                break
+                    while True:
+                        opcion = input("No se introdujo un texto válido. Desea continuar? (Y/N)\n").lower()
+                        if opcion == "y" or "yes" in opcion:
+                            break
+                        elif opcion == "n" or "no" in opcion:
+                            flag_continue = False
+                            break
             else:
-                opcion = input("No se introdujo un texto válido. Desea continuar? (Y/N)\n").lower()
-                if opcion == "n" or "no" in opcion:
-                    break
+                while True:
+                    opcion = input("No se introdujo un texto válido. Desea continuar? (Y/N)\n").lower()
+                    if opcion == "y" or "yes" in opcion:
+                        break
+                    elif opcion == "n" or "no" in opcion:
+                        flag_continue = False
+                        break
         except:
-            opcion = input("No se introdujo un texto válido. Desea continuar? (Y/N)\n").lower()
-            if opcion == "n" or "no" in opcion:
-                break
+            while True:
+                opcion = input("No se introdujo un texto válido. Desea continuar? (Y/N)\n").lower()
+                if opcion == "y" or "yes" in opcion:
+                    break
+                elif opcion == "n" or "no" in opcion:
+                    flag_continue = False
+                    break
