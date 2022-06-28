@@ -47,7 +47,8 @@ def printNonCommonWithFilter(str1, str2):
 
 
 if __name__ == '__main__':
-    while True:
+    flag_continue = True
+    while flag_continue:
         try:
             str1 = input("Introduzca la primera cadena de caracteres y presione ENTER: \n")
             str2 = input("Introduzca la segunda cadena de caracteres y presione ENTER: \n")
@@ -63,14 +64,26 @@ if __name__ == '__main__':
                 print(f"Los caracteres presentes en la segunda cadena pero no en la primera cadena son (utilizando función printNonCommonWithFilter): {out2}")
                 break
             elif str1 == "":
-                opcion = input("No se introdujo la primera cadena de caracteres válida. Desea continuar? (Y/N)\n").lower()
-                if opcion == "n" or "no" in opcion:
-                    break
+                while True:
+                    opcion = input("No se introdujo la primera cadena de caracteres válida. Desea continuar? (Y/N)\n").lower()
+                    if opcion == "y" or "yes" in opcion:
+                        break
+                    elif opcion == "n" or "no" in opcion:
+                        flag_continue = False
+                        break
             elif str2 == "":
-                opcion = input("No se introdujo la segunda cadena de caracteres válida. Desea continuar? (Y/N)\n").lower()
-                if opcion == "n" or "no" in opcion:
-                    break
+                while True:
+                    opcion = input("No se introdujo la segunda cadena de caracteres válida. Desea continuar? (Y/N)\n").lower()
+                    if opcion == "y" or "yes" in opcion:
+                        break
+                    elif opcion == "n" or "no" in opcion:
+                        flag_continue = False
+                        break
         except:
-            opcion = input("No se introdujo la cadena de caracteres válida. Desea continuar? (Y/N)\n").lower()
-            if opcion == "n" or "no" in opcion:
-                break
+            while True:
+                opcion = input("No se introdujo la cadena de caracteres válida. Desea continuar? (Y/N)\n").lower()
+                if opcion == "y" or "yes" in opcion:
+                    break
+                elif opcion == "n" or "no" in opcion:
+                    flag_continue = False
+                    break
