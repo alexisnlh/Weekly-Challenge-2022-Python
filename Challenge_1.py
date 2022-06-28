@@ -41,7 +41,8 @@ def anagrama_2():
 
 
 if __name__ == '__main__':
-    while True:
+    flag_continue = True
+    while flag_continue:
         try:
             opcion = int(input("Introduzca qué función ejecutar (1 o 2)? y presione ENTER: \n"))
             if opcion == 1:
@@ -53,10 +54,18 @@ if __name__ == '__main__':
                 anagrama_2()
                 break
             else:
-                opcion = input("No seleccionaste una opción válida. Desea continuar? (Y/N)\n").lower()
-                if opcion == "n" or "no" in opcion:
-                    break
+                while True:
+                    opcion = input("No seleccionaste una opción válida. Desea continuar? (Y/N)\n").lower()
+                    if opcion == "y" or "yes" in opcion:
+                        break
+                    elif opcion == "n" or "no" in opcion:
+                        flag_continue = False
+                        break
         except:
-            opcion = input("No seleccionaste una opción válida. Desea continuar? (Y/N)\n").lower()
-            if opcion == "n" or "no" in opcion:
-                break
+            while True:
+                opcion = input("No seleccionaste una opción válida. Desea continuar? (Y/N)\n").lower()
+                if opcion == "y" or "yes" in opcion:
+                    break
+                elif opcion == "n" or "no" in opcion:
+                    flag_continue = False
+                    break
