@@ -112,7 +112,8 @@ def decoder(input_string):
 
 
 if __name__ == '__main__':
-    while True:
+    flag_continue = True
+    while flag_continue:
         try:
             input_string = input("Introduzca la cadena de texto o código morse a transformar y presione ENTER: \n")
             if input_string != "":
@@ -127,10 +128,18 @@ if __name__ == '__main__':
                     print(f"No se pudo transformar la cadena de texto/código morse ingresado por no encontrarse el caracter {morseText}")
                 break
             else:
-                opcion = input("No se introdujo una cadena de texto o código morse válida. Desea continuar? (Y/N)\n").lower()
-                if opcion == "n" or "no" in opcion:
-                    break
+                while True:
+                    opcion = input("No se introdujo una cadena de texto o código morse válida. Desea continuar? (Y/N)\n").lower()
+                    if opcion == "y" or "yes" in opcion:
+                        break
+                    elif opcion == "n" or "no" in opcion:
+                        flag_continue = False
+                        break
         except:
-            opcion = input("No se introdujo una cadena de texto o código morse válida. Desea continuar? (Y/N)\n").lower()
-            if opcion == "n" or "no" in opcion:
-                break
+            while True:
+                opcion = input("No se introdujo una cadena de texto o código morse válida. Desea continuar? (Y/N)\n").lower()
+                if opcion == "y" or "yes" in opcion:
+                    break
+                elif opcion == "n" or "no" in opcion:
+                    flag_continue = False
+                    break
