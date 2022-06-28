@@ -34,7 +34,8 @@ def countWords(input_string):
 
 
 if __name__ == '__main__':
-    while True:
+    flag_continue = True
+    while flag_continue:
         try:
             input_string = input("Introduzca la cadena de texto que desea invertir y presione ENTER: \n")
             input_string = input_string.rstrip().lstrip()
@@ -43,10 +44,18 @@ if __name__ == '__main__':
                 countWords(input_string)
                 break
             else:
-                opcion = input("No se introdujo una cadena de texto válida. Desea continuar? (Y/N)\n").lower()
-                if opcion == "n" or "no" in opcion:
-                    break
+                while True:
+                    opcion = input("No se introdujo una cadena de texto válida. Desea continuar? (Y/N)\n").lower()
+                    if opcion == "y" or "yes" in opcion:
+                        break
+                    elif opcion == "n" or "no" in opcion:
+                        flag_continue = False
+                        break
         except:
-            opcion = input("No se introdujo una cadena de texto válida. Desea continuar? (Y/N)\n").lower()
-            if opcion == "n" or "no" in opcion:
-                break
+            while True:
+                opcion = input("No se introdujo una cadena de texto válida. Desea continuar? (Y/N)\n").lower()
+                if opcion == "y" or "yes" in opcion:
+                    break
+                elif opcion == "n" or "no" in opcion:
+                    flag_continue = False
+                    break
