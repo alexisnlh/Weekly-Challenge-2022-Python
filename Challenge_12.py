@@ -53,7 +53,8 @@ def isPalindrome(input_string):
 
 
 if __name__ == '__main__':
-    while True:
+    flag_continue = True
+    while flag_continue:
         try:
             input_string = input("Introduzca el texto a verificar si es palíndromo o no, y presione ENTER: \n")
             if input_string != "":
@@ -65,10 +66,18 @@ if __name__ == '__main__':
                     print(f"El texto introducido ({input_string}) NO es palíndromo.")
                 break
             else:
-                opcion = input("No se introdujo un texto válido. Desea continuar? (Y/N)\n").lower()
-                if opcion == "n" or "no" in opcion:
-                    break
+                while True:
+                    opcion = input("No se introdujo un texto válido. Desea continuar? (Y/N)\n").lower()
+                    if opcion == "y" or "yes" in opcion:
+                        break
+                    elif opcion == "n" or "no" in opcion:
+                        flag_continue = False
+                        break
         except:
-            opcion = input("No se introdujo un texto válido. Desea continuar? (Y/N)\n").lower()
-            if opcion == "n" or "no" in opcion:
-                break
+            while True:
+                opcion = input("No se introdujo un texto válido. Desea continuar? (Y/N)\n").lower()
+                if opcion == "y" or "yes" in opcion:
+                    break
+                elif opcion == "n" or "no" in opcion:
+                    flag_continue = False
+                    break
