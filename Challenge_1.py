@@ -28,25 +28,18 @@ class Anagrama:
         result_2 = ''.join(sorted(self.string_2, reverse=True))
 
         if self.string_2 == result_1 or self.string_1 == result_2:
-            print(
-                " El resultado es VERDADERO. La palabra {0} es un anagrama de {1}.".format(
-                    self.string_1, self.string_2))
+            print(f"El resultado es VERDADERO. La palabra {self.string_1} es un anagrama de {self.string_2}.")
         else:
-            print(
-                " El resultado es FALSO. La palabra {0} no es un anagrama de {1}.".format(
-                    self.string_1, self.string_2))
+            print(f"El resultado es FALSO. La palabra {self.string_1} no es un anagrama de {self.string_2}.")
 
     # Función 2 para introducir dos palabras y verificar si es un anagrama
     # (return True) o no (return False)
     def option_2(self):
         if sorted(self.string_1) == sorted(self.string_2):
             print(
-                " El resultado es VERDADERO. La palabra {0} es un anagrama de {1}.".format(
-                    self.string_1, self.string_2))
+                f"El resultado es VERDADERO. La palabra {self.string_1} es un anagrama de {self.string_2}.")
         else:
-            print(
-                " El resultado es FALSO. La palabra {0} no es un anagrama de {1}.".format(
-                    self.string_1, self.string_2))
+            print(f"El resultado es FALSO. La palabra {self.string_1} no es un anagrama de {self.string_2}.")
 
 
 if __name__ == '__main__':
@@ -55,19 +48,21 @@ if __name__ == '__main__':
         try:
             opcion = int(input(
                 "Introduzca qué función ejecutar (1 o 2)? y presione ENTER: \n"))
-            input_1 = input(
-                "Introduzca la primera palabra y presione ENTER: \n").lower()
-            input_2 = input(
-                "Introduzca la segunda palabra y presione ENTER: \n").lower()
 
-            if opcion == 1:
-                option = Anagrama(input_1, input_2)
-                option.option_1()
-                break
-            elif opcion == 2:
-                option = Anagrama(input_1, input_2)
-                option.option_2()
-                break
+            if opcion in (1, 2):
+                input_1 = input(
+                    "Introduzca la primera palabra y presione ENTER: \n").lower()
+                input_2 = input(
+                    "Introduzca la segunda palabra y presione ENTER: \n").lower()
+
+                if opcion == 1:
+                    option = Anagrama(input_1, input_2)
+                    option.option_1()
+                    break
+                elif opcion == 2:
+                    option = Anagrama(input_1, input_2)
+                    option.option_2()
+                    break
             else:
                 while True:
                     opcion = input("No seleccionaste una opción válida. Desea continuar? (Y/N)\n").lower()
@@ -76,7 +71,8 @@ if __name__ == '__main__':
                     elif opcion == "n" or "no" in opcion:
                         flag_continue = False
                         break
-        except KnownException:
+        except Exception as error:
+            print(f"Exception: {error}")
             while True:
                 opcion = input("No seleccionaste una opción válida. Desea continuar? (Y/N)\n").lower()
                 if opcion == "y" or "yes" in opcion:
