@@ -1,3 +1,7 @@
+import typer
+from rich.console import Console
+
+console = Console(color_system="windows")
 """
     Reto #0
     El famoso "FIZZ BUZZ"
@@ -22,16 +26,17 @@ class FizzBuzz:
     """
     @staticmethod
     def print_fizzbuzz():
+        console.print("Programa FizzBuzz! 💥", style='bold green')
         for number in range(1, 101):
             if number % 3 == 0 and number % 5 == 0:
-                print("fizzbuzz")
+                console.print("fizzbuzz", style='bold purple')
             elif number % 3 == 0:
-                print("fizz")
+                console.print("[bright_white]-->[/bright_white] [bright_white on bright_red]fizz[/bright_white on bright_red]")
             elif number % 5 == 0:
-                print("buzz")
+                console.print("[bright_white]-->[/bright_white] [bright_white on blue1]buzz[/bright_white on blue1]")
             else:
-                print(number)
+                console.print(f"{number}", style='color(63)')
 
 
 if __name__ == '__main__':
-    FizzBuzz.print_fizzbuzz()
+    typer.run(FizzBuzz.print_fizzbuzz)
