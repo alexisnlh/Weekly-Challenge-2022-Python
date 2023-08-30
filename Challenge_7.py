@@ -1,7 +1,7 @@
 import sys
 import typer
 from rich.console import Console
-from rich.prompt import Prompt, IntPrompt
+from rich.prompt import Prompt
 
 console = Console(color_system="windows")
 # Reto #7
