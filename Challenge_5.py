@@ -1,9 +1,12 @@
+import sys
 import requests
 import math
+import typer
 from PIL import Image
 from io import BytesIO
+from rich.console import Console
 
-
+console = Console(color_system="windows")
 """
     Reto #5
     Aspect ratio de una imagen
@@ -19,25 +22,22 @@ from io import BytesIO
     1920*1080px.
 """
 
-url = "https://raw.githubusercontent.com/mouredev/mouredev/master/mouredev_github_profile.png"
 
-
-class rationalAspectRatio:
+class RationalAspectRatio:
     """
         Obtener las dimensiones de la imagen importada por URL
     """
-    def __init__(self, url):
-        self.url = url
+    url = "https://raw.githubusercontent.com/mouredev/mouredev/master/mouredev_github_profile.png"
 
     def get_aspect_ratio(self):
         # Obtiene la imagen desde la URL
-        response = requests.get(self.url)
+        response = requests.get(self.__class__.url)
 
         # Abre el contenido de la imagen para obtener su tamaño
         img = Image.open(BytesIO(response.content))
         width, height = img.size
-        print(f"El ancho de la imagen es: {width}")
-        print(f"La altura de la imagen es: {height}")
+        console.print(f"El ancho de la imagen es: {width}", style='bold green')
+        console.print(f"La altura de la imagen es: {height}", style='bold blue')
 
         # Verifica si tiene ancho y alto distinto de cero. Se calcula el aspect radio
         if width > 0 and height > 0:
@@ -49,17 +49,11 @@ class rationalAspectRatio:
                 aspectRatio = 1.0 / (aspectRatio - round_aspect)
                 round_aspect = math.floor(aspectRatio)
                 (x_end, y_end, x_init, y_init) = (x_init, y_init, x_end + int(round_aspect) * x_init, y_end + int(round_aspect) * y_init)
+            console.print(f"El aspect ratio es [bright_white on blue1]{y_init}:{x_init}[/bright_white on blue1]")
             return x_init, y_init
         else:
-            print("La imagen no tiene un ancho ni altura válido")
-            return None, None
+            sys.exit("No se ha podido calcular el aspect ratio. La imagen no tiene un ancho ni altura válido")
 
 
 if __name__ == '__main__':
-    # Obtener las dimensiones de la imagen importada por URL
-    x, y = rationalAspectRatio(url).get_aspect_ratio()
-
-    if x is not None and y is not None:
-        print(f"El aspect ratio es {y}:{x}")
-    else:
-        print("No se ha podido calcular el aspect ratio")
+    typer.run(RationalAspectRatio().get_aspect_ratio)
