@@ -1,3 +1,9 @@
+import sys
+import typer
+from rich.console import Console
+from rich.prompt import Prompt, IntPrompt
+
+console = Console(color_system="windows")
 # Reto #7
 # Contando palabras
 # Fecha publicación enunciado: 14/02/22
@@ -10,52 +16,48 @@
 #  - No se pueden utilizar funciones propias del lenguaje que lo resuelvan automáticamente.
 
 
-# Función para contar las veces que se repite cada palabra
-def countWords(input_string):
-    try:
+class CountWords:
+    """
+        Contar las veces que se repite cada palabra
+    """
+    characters_delete = ",;:.\n!\"'()"
+
+    def __init__(self, words):
+        self.words = words
+
+    def process_count(self):
         # Los caracteres que no se cuentan como palabras
-        quitar = ",;:.\n!\"'()"
-        for caracter in quitar:
+        input_string = self.words
+        for caracter in self.__class__.characters_delete:
             input_string = input_string.replace(caracter, "")
 
-        mutableString = input_string.lower().split(" ")
-        wordsDict = dict()
+        mutable_string = input_string.lower().split(" ")
+        words_dict = dict()
 
-        for word in mutableString:
-            if word in wordsDict:
-                wordsDict[word] += 1
-            else:
-                wordsDict[word] = 1
+        for letter in mutable_string:
+            words_dict[letter] = words_dict[letter] + 1 if letter in words_dict else 1
+            # if letter in words_dict:
+            #     words_dict[letter] += 1
+            # else:
+            #     words_dict[letter] = 1
 
-        for word in wordsDict:
-            print("{0} se ha repetido {1} veces".format(word, wordsDict[word]))
-    except Exception as error:
-        print("Exception: {}".format(error))
+        for letter in words_dict:
+            console.print("{0} se ha repetido [bold]{1}[/bold] veces".format(letter, words_dict[letter]))
+
+
+def main():
+    input_string = Prompt.ask(
+        "Introduzca la cadena de texto que desea verificar y presione ENTER (q --> Exit)").rstrip().lstrip()
+
+    if input_string == "":
+        main()
+        sys.exit("Proceso finalizado!")
+
+    elif input_string == "q":
+        sys.exit("Proceso finalizado!")
+
+    CountWords(input_string).process_count()
 
 
 if __name__ == '__main__':
-    flag_continue = True
-    while flag_continue:
-        try:
-            input_string = input("Introduzca la cadena de texto que desea invertir y presione ENTER: \n")
-            input_string = input_string.rstrip().lstrip()
-            if input_string != "":
-                # Función para contar las veces que se repite cada palabra
-                countWords(input_string)
-                break
-            else:
-                while True:
-                    opcion = input("No se introdujo una cadena de texto válida. Desea continuar? (Y/N)\n").lower()
-                    if opcion == "y" or "yes" in opcion:
-                        break
-                    elif opcion == "n" or "no" in opcion:
-                        flag_continue = False
-                        break
-        except:
-            while True:
-                opcion = input("No se introdujo una cadena de texto válida. Desea continuar? (Y/N)\n").lower()
-                if opcion == "y" or "yes" in opcion:
-                    break
-                elif opcion == "n" or "no" in opcion:
-                    flag_continue = False
-                    break
+    typer.run(main)
