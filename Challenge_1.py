@@ -1,3 +1,9 @@
+import sys
+import typer
+from rich.console import Console
+from rich.prompt import Prompt
+
+console = Console(color_system="windows")
 """
     Reto #1
     ¿Es un anagrama?
@@ -28,55 +34,42 @@ class Anagrama:
         result_2 = ''.join(sorted(self.string_2, reverse=True))
 
         if self.string_2 == result_1 or self.string_1 == result_2:
-            print(f"El resultado es VERDADERO. La palabra {self.string_1} es un anagrama de {self.string_2}.")
+            console.print(
+                f"[green]El resultado es VERDADERO.[/green] La palabra [dark_green bold]{self.string_1}[/dark_green bold] es un anagrama de [dark_green bold]{self.string_2}[/dark_green bold].")
         else:
-            print(f"El resultado es FALSO. La palabra {self.string_1} no es un anagrama de {self.string_2}.")
+            console.print(
+                f"[red]El resultado es FALSO.[/red] La palabra [dark_red bold]{self.string_1}[/dark_red bold] no es un anagrama de [dark_red bold]{self.string_2}[/dark_red bold].")
 
     # Función 2 para introducir dos palabras y verificar si es un anagrama
     # (return True) o no (return False)
     def option_2(self):
         if sorted(self.string_1) == sorted(self.string_2):
-            print(
-                f"El resultado es VERDADERO. La palabra {self.string_1} es un anagrama de {self.string_2}.")
+            console.print(
+                f"[green]El resultado es VERDADERO.[/green] La palabra [dark_green bold]{self.string_1}[/dark_green bold] es un anagrama de [dark_green bold]{self.string_2}[/dark_green bold].")
         else:
-            print(f"El resultado es FALSO. La palabra {self.string_1} no es un anagrama de {self.string_2}.")
+            console.print(
+                f"[red]El resultado es FALSO.[/red] La palabra [dark_red bold]{self.string_1}[/dark_red bold] no es un anagrama de [dark_red bold]{self.string_2}[/dark_red bold].")
+
+
+def main():
+    option = Prompt.ask("Introduzca qué función ejecutar? y presione ENTER", choices=["1", "2", "exit"])
+
+    if option == "exit":
+        sys.exit("Proceso finalizado!")
+
+    input_1 = Prompt.ask("Introduzca la primera palabra y presione ENTER").lower()
+    input_2 = Prompt.ask("Introduzca la segunda palabra y presione ENTER").lower()
+
+    if option == "1":
+        option = Anagrama(input_1, input_2)
+        option.option_1()
+        main()
+
+    else:
+        option = Anagrama(input_1, input_2)
+        option.option_2()
+        main()
 
 
 if __name__ == '__main__':
-    flag_continue = True
-    while flag_continue:
-        try:
-            opcion = int(input(
-                "Introduzca qué función ejecutar (1 o 2)? y presione ENTER: \n"))
-
-            if opcion in (1, 2):
-                input_1 = input(
-                    "Introduzca la primera palabra y presione ENTER: \n").lower()
-                input_2 = input(
-                    "Introduzca la segunda palabra y presione ENTER: \n").lower()
-
-                if opcion == 1:
-                    option = Anagrama(input_1, input_2)
-                    option.option_1()
-                    break
-                elif opcion == 2:
-                    option = Anagrama(input_1, input_2)
-                    option.option_2()
-                    break
-            else:
-                while True:
-                    opcion = input("No seleccionaste una opción válida. Desea continuar? (Y/N)\n").lower()
-                    if opcion == "y" or "yes" in opcion:
-                        break
-                    elif opcion == "n" or "no" in opcion:
-                        flag_continue = False
-                        break
-        except Exception as error:
-            print(f"Exception: {error}")
-            while True:
-                opcion = input("No seleccionaste una opción válida. Desea continuar? (Y/N)\n").lower()
-                if opcion == "y" or "yes" in opcion:
-                    break
-                elif opcion == "n" or "no" in opcion:
-                    flag_continue = False
-                    break
+    typer.run(main)
