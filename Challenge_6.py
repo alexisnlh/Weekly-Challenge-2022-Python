@@ -1,7 +1,7 @@
 import sys
 import typer
 from rich.console import Console
-from rich.prompt import Prompt, IntPrompt, FloatPrompt
+from rich.prompt import Prompt, IntPrompt
 
 console = Console(color_system="windows")
 """
