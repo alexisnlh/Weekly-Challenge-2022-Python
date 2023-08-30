@@ -1,3 +1,7 @@
+import typer
+from rich.console import Console
+
+console = Console(color_system="windows")
 """
     Reto #3
     ¿Es un número primo?
@@ -23,14 +27,18 @@ class EsPrimo:
             pass
         else:
             if self.number == self.check_number:
-                print(self.number)
+                console.print(self.number, style='bold purple')
             elif self.number % self.check_number != 0:
                 EsPrimo(self.number, self.check_number + 1).print_number()
             else:
                 pass
 
 
-if __name__ == '__main__':
+def main():
     for index in range(1, 101):
         # Comprueba si un número es o no primo
         EsPrimo(index, 2).print_number()
+
+
+if __name__ == '__main__':
+    typer.run(main)
