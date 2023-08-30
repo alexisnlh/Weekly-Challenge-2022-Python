@@ -1,3 +1,7 @@
+import typer
+from rich.console import Console
+
+console = Console(color_system="windows")
 """
     Reto #2
     La sucesión de Fibonacci
@@ -20,11 +24,11 @@ class Fibonacci:
         num_0 = 0
         num_1 = 1
         for number in range(1, 51):
-            print(num_0)
+            console.print(num_0, style='bold purple')
             num_next = num_0 + num_1
             num_0 = num_1
             num_1 = num_next
 
 
 if __name__ == '__main__':
-    Fibonacci.fibonacci_numbers()
+    typer.run(Fibonacci.fibonacci_numbers)
