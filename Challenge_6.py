@@ -1,3 +1,9 @@
+import sys
+import typer
+from rich.console import Console
+from rich.prompt import Prompt, IntPrompt, FloatPrompt
+
+console = Console(color_system="windows")
 """
     Reto #6
     Invirtiendo cadenas
@@ -11,7 +17,7 @@
 """
 
 
-class recursiveReverse:
+class RecursiveReverse:
     """
         Obtener la cadena de texto inversa a la introducida. Option 1 por
         bucle, option 2 por función recursiva
@@ -63,42 +69,36 @@ class recursiveReverse:
             newIndex = self.index + 1
 
             # Se llama a la función para ir construyendo la cadena de texto inversa
-            newReversedText = recursiveReverse(self.input_string,
+            newReversedText = RecursiveReverse(self.input_string,
                                                index=newIndex,
                                                reversedText=newReversedText).option_2()
         return newReversedText
 
 
-if __name__ == '__main__':
-    flag_continue = True
-    while flag_continue:
-        try:
-            input_string = input(
-                "Introduzca la cadena de texto que desea invertir y presione ENTER: \n").rstrip().lstrip()
-            input_option = int(input(
-                "Introduzca el número de la función que desea que realice el proceso y presione ENTER:\n1.- Por bucle\n2.- Por función recursiva\n").rstrip().lstrip())
+def main():
+    input_string = Prompt.ask("Introduzca la cadena de texto que desea invertir y presione ENTER").rstrip().lstrip()
 
-            if input_string != "" and input_option in [1, 2]:
-                if input_option == 1:
-                    # Función 1 para introducir la cadena de texto y devolver su inversa por bucle
-                    print(f"La cadena de texto inversa de la función 1 es: {recursiveReverse(input_string).option_1()}")
-                else:
-                    # Función 2 para introducir la cadena de texto y devolver su inversa por función recursiva
-                    print(f"La cadena de texto inversa de la función 2 es: {recursiveReverse(input_string).option_2()}")
-                break
-            else:
-                while True:
-                    opcion = input("No se introdujo una cadena de texto válida o número de función correcta. Desea continuar? (Y/N)\n").lower()
-                    if opcion == "y" or "yes" in opcion:
-                        break
-                    elif opcion == "n" or "no" in opcion:
-                        flag_continue = False
-                        break
-        except (ValueError, Exception):
-            while True:
-                opcion = input("No se introdujo una cadena de texto válida o número de función correcta. Desea continuar? (Y/N)\n").lower()
-                if opcion == "y" or "yes" in opcion:
-                    break
-                elif opcion == "n" or "no" in opcion:
-                    flag_continue = False
-                    break
+    if input_string == "":
+        main()
+        sys.exit("Proceso finalizado!")
+
+    option = IntPrompt.ask(
+        "Introduzca la opción que desea que realice el proceso y presione ENTER: \n(1 --> Por bucle, 2 --> Por función recursiva, 3 --> Exit)",
+        choices=["1", "2", "3"], show_choices=False)
+
+    if option == 1:
+        # Función 1 para introducir la cadena de texto y devolver su inversa por bucle
+        console.print(
+            f"La cadena de texto inversa de la función 1 es: [bright_white on bright_red bold]{RecursiveReverse(input_string).option_1()}[/bright_white on bright_red bold]")
+
+    elif option == 2:
+        # Función 2 para introducir la cadena de texto y devolver su inversa por función recursiva
+        console.print(
+            f"La cadena de texto inversa de la función 2 es: [bright_white on blue1 bold]{RecursiveReverse(input_string).option_2()}[/bright_white on blue1 bold]")
+
+    else:
+        sys.exit("Proceso finalizado!")
+
+
+if __name__ == '__main__':
+    typer.run(main)
