@@ -69,7 +69,7 @@ class IsPalindrome:
 
 
 def main():
-    input_string = Prompt.ask("Introduzca el texto a verificar si es palíndromo o no, y presione ENTER").lower()
+    input_string = Prompt.ask("Introduzca el texto a verificar si es palíndromo o no, y presione ENTER (q --> Exit)").lower()
 
     if input_string == "":
         console.print("[red]No se introdujo un texto válido![/red]")
