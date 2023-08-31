@@ -1,3 +1,9 @@
+import sys
+import typer
+from rich.console import Console
+from rich.prompt import Prompt
+
+console = Console(color_system="windows")
 # Reto #9
 # Código Morse
 # Fecha publicación enunciado: 02/03/22
@@ -10,89 +16,95 @@
 # - El alfabeto morse soportado será el mostrado en https://es.wikipedia.org/wiki/Código_morse.
 
 
-naturalDict = {
-            "A": ".—",
-            "B": "—...",
-            "C": "—.—.",
-            "CH": "————",
-            "D": "—..",
-            "E": ".",
-            "F": "..—.",
-            "G": "——.",
-            "H": "....",
-            "I": "..",
-            "J": ".———",
-            "K": "—.—",
-            "L": ".—..",
-            "M": "——",
-            "N": "—.",
-            "Ñ": "——.——",
-            "O": "———",
-            "P": ".——.",
-            "Q": "——.—",
-            "R": ".—.",
-            "S": "...",
-            "T": "—",
-            "U": "..—",
-            "V": "...—",
-            "W": ".——",
-            "X": "—..—",
-            "Y": "—.——",
-            "Z": "——..",
-            "0": "—————",
-            "1": ".————",
-            "2": "..———",
-            "3": "...——",
-            "4": "....—",
-            "5": ".....",
-            "6": "—....",
-            "7": "——...",
-            "8": "———..",
-            "9": "————.",
-            ".": ".—.—.—",
-            ",": "——..——",
-            "?": "..——..",
-            "\"": ".—..—.",
-            "/": "—..—."
-        }
+class DecoderStringMorse:
+    """
+        Transforma texto natural a código morse y viceversa
+    """
 
+    naturalDict = {
+        "A": ".—",
+        "B": "—...",
+        "C": "—.—.",
+        "CH": "————",
+        "D": "—..",
+        "E": ".",
+        "F": "..—.",
+        "G": "——.",
+        "H": "....",
+        "I": "..",
+        "J": ".———",
+        "K": "—.—",
+        "L": ".—..",
+        "M": "——",
+        "N": "—.",
+        "Ñ": "——.——",
+        "O": "———",
+        "P": ".——.",
+        "Q": "——.—",
+        "R": ".—.",
+        "S": "...",
+        "T": "—",
+        "U": "..—",
+        "V": "...—",
+        "W": ".——",
+        "X": "—..—",
+        "Y": "—.——",
+        "Z": "——..",
+        "0": "—————",
+        "1": ".————",
+        "2": "..———",
+        "3": "...——",
+        "4": "....—",
+        "5": ".....",
+        "6": "—....",
+        "7": "——...",
+        "8": "———..",
+        "9": "————.",
+        ".": ".—.—.—",
+        ",": "——..——",
+        "?": "..——..",
+        "\"": ".—..—.",
+        "/": "—..—."
+    }
 
-# Función para transformar texto natural a código morse y viceversa
-def decoder(input_string):
-    try:
-        morseText_list = list()
+    def __init__(self, input_string):
+        self.input_string = input_string
+
+    def transform_process(self):
         morseText = str()
         morse = False
 
         # Verifica si el string ingresado es una cadena de texto o código morse
-        if not set(input_string) <= {'.', '—', ' '}:
+        if not set(self.input_string) <= {'.', '—', ' '}:
             # Texto natural
             flag = False
             morse = True
 
-            for index, letter in enumerate(input_string.upper()):
-                if letter in naturalDict.keys() or letter == " ":
+            for index, letter in enumerate(self.input_string.upper()):
+                if letter in self.__class__.naturalDict.keys() or letter == " ":
                     if letter != " ":
                         if not flag:
-                            if letter == "C" and input_string.upper()[index + 1] == "H":
-                                morseText += naturalDict["CH"] + " "
+                            if letter == "C" and self.input_string.upper()[index + 1] == "H":
+                                morseText += self.__class__.naturalDict["CH"] + " "
                                 flag = True
                             else:
-                                morseText += naturalDict[letter] + " "
+                                morseText += self.__class__.naturalDict[letter] + " "
                         else:
                             flag = False
                             continue
                     else:
                         morseText += " "
                 else:
-                    return False, morse, letter
-
+                    console.print(
+                        f"No se pudo transformar la cadena de texto/código morse ingresado por no encontrarse el caracter [red bold]{letter}[/red bold]")
+                    return None
         else:
             # Código morse
-            input_string += " "
+            self.input_string += " "
             subtext = str()
+            index = 0
 
-            for letter in input_string:
+            for letter in self.input_string:
                 # Verifica si hay espacio para transformar la letra del código morse
                 if letter != " ":
                     index = 0
@@ -104,42 +116,30 @@ def decoder(input_string):
                     if index == 2:
                         morseText += " "
                     else:
-                        morseText += list(naturalDict.keys())[list(naturalDict.values()).index(subtext)]
+                        morseText += list(self.__class__.naturalDict.keys())[list(self.__class__.naturalDict.values()).index(subtext)]
                         subtext = str()
-        return True, morse, morseText.rstrip()
-    except Exception as error:
-        print("Exception: {}".format(error))
+        if morse:
+            console.print(
+                f"El código morse de la cadena de texto ingresada es: [green bold]{morseText.rstrip()}[/green bold]")
+        else:
+            console.print(
+                f"La cadena de texto del código morse ingresado es: [blue bold]{morseText.rstrip()}[/blue bold]")
+
+
+def main():
+    input_string = Prompt.ask(
+        "Introduzca la cadena de texto/código morse y presione ENTER (q --> Exit)").rstrip().lstrip()
+
+    if input_string == "":
+        main()
+        sys.exit("Proceso finalizado!")
+
+    elif input_string == "q":
+        sys.exit("Proceso finalizado!")
+
+    # Transforma texto natural a código morse y viceversa
+    DecoderStringMorse(input_string).transform_process()
 
 
 if __name__ == '__main__':
-    flag_continue = True
-    while flag_continue:
-        try:
-            input_string = input("Introduzca la cadena de texto o código morse a transformar y presione ENTER: \n")
-            if input_string != "":
-                # Función para transformar texto natural a código morse y viceversa
-                result, morse, morseText = decoder(input_string)
-                if result:
-                    if morse:
-                        print(f"El código morse de la cadena de texto ingresada es: {morseText}")
-                    else:
-                        print(f"La cadena de texto del código morse ingresado es: {morseText}")
-                else:
-                    print(f"No se pudo transformar la cadena de texto/código morse ingresado por no encontrarse el caracter {morseText}")
-                break
-            else:
-                while True:
-                    opcion = input("No se introdujo una cadena de texto o código morse válida. Desea continuar? (Y/N)\n").lower()
-                    if opcion == "y" or "yes" in opcion:
-                        break
-                    elif opcion == "n" or "no" in opcion:
-                        flag_continue = False
-                        break
-        except:
-            while True:
-                opcion = input("No se introdujo una cadena de texto o código morse válida. Desea continuar? (Y/N)\n").lower()
-                if opcion == "y" or "yes" in opcion:
-                    break
-                elif opcion == "n" or "no" in opcion:
-                    flag_continue = False
-                    break
+    typer.run(main)
