@@ -1,3 +1,9 @@
+import sys
+import typer
+from rich.console import Console
+from rich.prompt import FloatPrompt
+
+console = Console(color_system="windows")
 # Reto #13
 # Factorial Recursivo
 # Fecha publicación enunciado: 28/03/22
@@ -7,54 +13,40 @@
 # Enunciado: Escribe una función que calcule y retorne el factorial de un número dado de forma recursiva.
 
 
-# Función para calcular el factorial del número ingresado
-def factorial(input_string):
-    try:
-        if int(input_string) > 1:
-            number = int(input_string)
-            return number * factorial(number - 1)
-        elif 0 < int(input_string) <= 1:
+class Factorial:
+    """
+        Calcular el factorial del número ingresado
+    """
+    def __init__(self, input_number):
+        self.input_number = input_number
+
+    def calculate_factorial(self):
+        if self.input_number > 1:
+            number = self.input_number
+            self.input_number -= 1
+            return number * self.calculate_factorial()
+        elif 0 < int(self.input_number) <= 1:
             return 1
         else:
             return None
-    except Exception as error:
-        print("Exception: {}".format(error))
+
+
+def main():
+    input_number = FloatPrompt.ask("Introduzca el número para calcular el factorial, y presione ENTER (q --> Exit)")
+
+    if input_number == "q":
+        sys.exit("Proceso finalizado!")
+
+    # Calcular el factorial del número ingresado
+    result = Factorial(input_number).calculate_factorial()
+
+    if result is not None:
+        console.print(
+                f"El factorial del número ingresado, [bold]{input_number}[/bold], es: [green]{result}[/green]")
+    else:
+        console.print(
+            f"[red]El factorial del número ingresado, {input_number}, no se puede obtener. El número debe ser mayor a cero.[/red]")
 
 
 if __name__ == '__main__':
-    flag_continue = True
-    while flag_continue:
-        try:
-            input_string = input("Introduzca el número para calcular el factorial, y presione ENTER: \n")
-            input_string = input_string.rstrip().lstrip()
-            if input_string != "":
-                # Función para calcular el factorial del número ingresado
-                result = factorial(input_string)
-                if result is not None:
-                    print(f"El factorial del número ingresado, {input_string}, es: {result}")
-                    break
-                else:
-                    print(f"El factorial del número ingresado, {input_string}, no se puede obtener. El número debe ser mayor a cero.")
-                    while True:
-                        opcion = input("No se introdujo un texto válido. Desea continuar? (Y/N)\n").lower()
-                        if opcion == "y" or "yes" in opcion:
-                            break
-                        elif opcion == "n" or "no" in opcion:
-                            flag_continue = False
-                            break
-            else:
-                while True:
-                    opcion = input("No se introdujo un texto válido. Desea continuar? (Y/N)\n").lower()
-                    if opcion == "y" or "yes" in opcion:
-                        break
-                    elif opcion == "n" or "no" in opcion:
-                        flag_continue = False
-                        break
-        except:
-            while True:
-                opcion = input("No se introdujo un texto válido. Desea continuar? (Y/N)\n").lower()
-                if opcion == "y" or "yes" in opcion:
-                    break
-                elif opcion == "n" or "no" in opcion:
-                    flag_continue = False
-                    break
+    typer.run(main)
