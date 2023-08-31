@@ -1,3 +1,9 @@
+import sys
+import typer
+from rich.console import Console
+from rich.prompt import Prompt
+
+console = Console(color_system="windows")
 # Reto #10
 # Expresiones equilibradas
 # Fecha publicación enunciado: 07/03/22
@@ -11,9 +17,14 @@
 # - Expresión no balanceada: { a * ( c + d ) ] - 5 }
 
 
-# Función para verificar los paréntesis, llaves y corchetes de la expresión ingresada
-def isBalanced(input_string):
-    try:
+class IsBalanced:
+    """
+        Verificar los paréntesis, llaves y corchetes de la expresión ingresada
+    """
+    def __init__(self, input_string):
+        self.input_string = input_string
+
+    def check_process(self):
         # Contadores por cada signo a verificar
         count_parenth_open = 0
         count_parenth_close = 0
@@ -23,7 +34,7 @@ def isBalanced(input_string):
         count_square_close = 0
 
         # Se verifican los signos en la expresión y se aumentan los contadores de cada uno para luego compararlos
-        for letter in input_string:
+        for letter in self.input_string:
             if letter == "(":
                 count_parenth_open += 1
             elif letter == ")":
@@ -45,52 +56,42 @@ def isBalanced(input_string):
 
             if count_parenth_open != count_parenth_close:
                 if count_parenth_open > count_parenth_close:
-                    message += " '(' de mas,"
+                    message += " [red bold]'('[/red bold] de mas,"
                 else:
-                    message += " ')' de mas,"
+                    message += " [red bold]')'[/red bold] de mas,"
 
             if count_keys_open != count_keys_close:
                 if count_keys_open > count_keys_close:
-                    message += " '{' de mas,"
+                    message += " [red bold]'{'[/red bold] de mas,"
                 else:
-                    message += " '}' de mas,"
+                    message += " [red bold]'}'[/red bold] de mas,"
 
             if count_square_open != count_square_close:
                 if count_square_open > count_square_close:
-                    message += " '[' de mas,"
+                    message += " [red bold]'['[/red bold] de mas,"
                 else:
-                    message += " ']' de mas,"
+                    message += " [red bold]']'[/red bold] de mas,"
 
             # Verifica si el mensaje tiene ',' al final para eliminarlo
             if message[-1] == ",":
                 message = message[:-1]
-        return message
-    except Exception as error:
-        print("Exception: {}".format(error))
+        console.print(message)
+
+
+def main():
+    input_string = Prompt.ask("Introduzca la expresión aritmética a verificar y presione ENTER (q --> Exit)")
+
+    if input_string == "":
+        console.print("[red]No se introdujo una expresión aritmética válida![/red]")
+        main()
+        sys.exit("Proceso finalizado!")
+
+    elif input_string == "q":
+        sys.exit("Proceso finalizado!")
+
+    # Verificar los paréntesis, llaves y corchetes de la expresión ingresada
+    IsBalanced(input_string).check_process()
 
 
 if __name__ == '__main__':
-    flag_continue = True
-    while flag_continue:
-        try:
-            input_string = input("Introduzca la expresión aritmética a verificar y presione ENTER: \n")
-            if input_string != "":
-                # Función para verificar los paréntesis, llaves y corchetes de la expresión ingresada
-                print(isBalanced(input_string))
-                break
-            else:
-                while True:
-                    opcion = input("No se introdujo una expresión aritmética válida. Desea continuar? (Y/N)\n").lower()
-                    if opcion == "y" or "yes" in opcion:
-                        break
-                    elif opcion == "n" or "no" in opcion:
-                        flag_continue = False
-                        break
-        except:
-            while True:
-                opcion = input("No se introdujo una expresión aritmética válida. Desea continuar? (Y/N)\n").lower()
-                if opcion == "y" or "yes" in opcion:
-                    break
-                elif opcion == "n" or "no" in opcion:
-                    flag_continue = False
-                    break
+    typer.run(main)
