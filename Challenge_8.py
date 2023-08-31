@@ -1,9 +1,7 @@
 import sys
-import re
-import math
 import typer
 from rich.console import Console
-from rich.prompt import Prompt, FloatPrompt
+from rich.prompt import FloatPrompt
 
 console = Console(color_system="windows")
 # Reto #8
