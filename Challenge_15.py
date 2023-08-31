@@ -1,6 +1,11 @@
+import sys
 import datetime
 import re
+import typer
+from rich.console import Console
+from rich.prompt import Prompt
 
+console = Console(color_system="windows")
 # Reto #15
 # ¿Cuántos días?
 # Fecha publicación enunciado: 11/04/22
@@ -14,69 +19,50 @@ import re
 # - Si una de las dos cadenas de texto no representa una fecha correcta se lanzará una excepción.
 
 
-# Función para obtener la diferencia de días que hay entre dos fechas
-def daysBetween(input_string_1, input_string_2):
-    try:
-        # Comprueba que el formato es el correcto para ambas cadenas de texto ingresadas, si no, se informa cual no es correcta
-        check_1 = re.search("([0-9]){2}[\/]([0-9]){2}[\/]([0-9]){4}", input_string_1, re.IGNORECASE)
-        check_2 = re.search("([0-9]){2}[/]([0-9]){2}[/]([0-9]){4}", input_string_2, re.IGNORECASE)
+class DaysBetween:
+    """
+        Obtener la diferencia de días que hay entre dos fechas
+    """
+    pattern_date = r'([0-9]){2}[\/]([0-9]){2}[\/]([0-9]){4}'
 
-        if check_1 and check_2:
-            # Obtiene el campo fecha, cambia el formato a DATE y calcula la diferencia de fechas
-            input_string_1 = check_1.group()
-            input_string_2 = check_2.group()
-            input_date_1 = datetime.datetime.strptime(input_string_1, '%d/%m/%Y')
-            input_date_2 = datetime.datetime.strptime(input_string_2, '%d/%m/%Y')
-            diff_date = abs((input_date_2 - input_date_1).days)
-            return True, True, diff_date
-        else:
-            if not check_1:
-                return False, None, None
+    def __init__(self, input_string_1, input_string_2):
+        self.input_string_1 = input_string_1
+        self.input_string_2 = input_string_2
+
+    def check_date(self):
+        try:
+            # Comprueba que el formato es el correcto para ambas cadenas de texto ingresadas, si no, se informa cual no es correcta
+            check_1 = re.search(self.__class__.pattern_date, self.input_string_1, re.IGNORECASE)
+            check_2 = re.search(self.__class__.pattern_date, self.input_string_2, re.IGNORECASE)
+
+            if check_1 and check_2:
+                # Obtiene el campo fecha, cambia el formato a DATE y calcula la diferencia de fechas
+                input_date_1 = datetime.datetime.strptime(check_1.group(), '%d/%m/%Y')
+                input_date_2 = datetime.datetime.strptime(check_2.group(), '%d/%m/%Y')
+                diff_date = abs((input_date_2 - input_date_1).days)
+                console.print(f"La diferencia que hay entre [bold]{self.input_string_1}[/bold] y [bold]{self.input_string_2}[/bold] es de [green bold]{diff_date}[/green bold] días.")
+                return True, True, diff_date
             else:
-                return None, False, None
-    except Exception as error:
-        print("Exception: {}".format(error))
+                if not check_1:
+                    console.print("No se introdujo la primera fecha válida (DD/MM/YYYY)")
+                else:
+                    console.print("No se introdujo la segunda fecha válida (DD/MM/YYYY)")
+        except Exception as error:
+            console.print(f"[red]Error en check date: {error}[red]")
+
+
+def main():
+    input_string_1 = Prompt.ask("Introduzca la primera fecha, y presione ENTER (q --> Exit)").rstrip().lstrip()
+    if input_string_1 == "q":
+        sys.exit("Proceso finalizado!")
+
+    input_string_2 = Prompt.ask("Introduzca la segunda fecha, y presione ENTER (q --> Exit)").rstrip().lstrip()
+    if input_string_2 == "q":
+        sys.exit("Proceso finalizado!")
+
+    # Obtener la diferencia de días que hay entre dos fechas
+    DaysBetween(input_string_1, input_string_2).check_date()
 
 
 if __name__ == '__main__':
-    flag_continue = True
-    while flag_continue:
-        try:
-            input_string_1 = input("Introduzca la primera fecha, y presione ENTER: \n")
-            input_string_2 = input("Introduzca la segunda fecha, y presione ENTER: \n")
-
-            # Se eliminan los espacios en blanco al inicio y final de las cadenas de texto ingresadas
-            input_string_1 = input_string_1.rstrip().lstrip()
-            input_string_2 = input_string_2.rstrip().lstrip()
-
-            # Función para obtener la diferencia de días que hay entre dos fechas
-            check_1, check_2, result = daysBetween(input_string_1, input_string_2)
-
-            if check_1 and check_2:
-                print(f"La diferencia que hay entre {input_string_1} y {input_string_2} es de {result} días.")
-                break
-            else:
-                if not check_1:
-                    while True:
-                        opcion = input("No se introdujo la primera fecha válida (DD/MM/YYYY). Desea continuar? (Y/N)\n").lower()
-                        if opcion == "y" or "yes" in opcion:
-                            break
-                        elif opcion == "n" or "no" in opcion:
-                            flag_continue = False
-                            break
-                else:
-                    while True:
-                        opcion = input("No se introdujo la segunda fecha válida (DD/MM/YYYY). Desea continuar? (Y/N)\n").lower()
-                        if opcion == "y" or "yes" in opcion:
-                            break
-                        elif opcion == "n" or "no" in opcion:
-                            flag_continue = False
-                            break
-        except:
-            while True:
-                opcion = input("No se introdujo un texto válido. Desea continuar? (Y/N)\n").lower()
-                if opcion == "y" or "yes" in opcion:
-                    break
-                elif opcion == "n" or "no" in opcion:
-                    flag_continue = False
-                    break
+    typer.run(main)
