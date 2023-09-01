@@ -1,3 +1,9 @@
+import sys
+import typer
+from rich.console import Console
+from rich.prompt import Prompt
+
+console = Console(color_system="windows")
 # Reto #17
 # La carrera de obstáculos
 # Fecha publicación enunciado: 25/04/22
@@ -15,115 +21,76 @@
 # - La función retornará un Boolean que indique si ha superado la carrera. Para ello tiene que realizar la opción correcta en cada tramo de la pista
 
 
-# Función para verificar si un/a atleta ha superado correctamente una carrera de obstáculos
-def checkRace(run_jump_list, pista_string):
-    try:
+class Race:
+    """
+        Verificar si un/a atleta ha superado correctamente una carrera de obstáculos
+    """
+
+    athlete_state = {
+        "run": "_",
+        "jump": "|"
+    }
+
+    def __init__(self, runjump_list, track_string):
+        self.runjump_list = runjump_list
+        self.track_string = track_string
+
+    def checkRace(self):
         pista_list = list()
-        pista_list[:0] = pista_string
-        AthleteState = {
-            "run": "_",
-            "jump": "|"
-        }
+        pista_list[:0] = self.track_string
         result = list()
-        result_type = True
+        count = 0
 
         # Se verifican que los string coincidan
-        for elements in zip(run_jump_list, pista_list):
-            if elements[1] == AthleteState[elements[0]]:
+        for elements in zip(self.runjump_list, self.track_string):
+            if elements[1] == self.__class__.athlete_state[elements[0]]:
                 result.append(elements[1])
             else:
-                result_type = False
                 if elements[1] == "_" or elements[1] == "?":
                     result.append("x")
                 else:
                     result.append("/")
 
         # Se verifica que ambos string introducidos, convertidos a lista, tengan el mismo tamaño
-        if len(run_jump_list) != len(pista_list):
-            result_type = False
-            if len(run_jump_list) > len(pista_list):
-                count = len(run_jump_list) - len(pista_list)
-            elif len(run_jump_list) < len(pista_list):
-                count = len(pista_list) - len(run_jump_list)
+        if len(self.runjump_list) != len(self.track_string):
+            if len(self.runjump_list) > len(self.track_string):
+                count = len(self.runjump_list) - len(self.track_string)
+            elif len(self.runjump_list) < len(self.track_string):
+                count = len(self.track_string) - len(self.runjump_list)
             for element in range(0, count):
                 result.append("?")
 
-        print(f"Los valores iniciales de la carrera son: {', '.join(run_jump_list)}.\nLos valores iniciales de la pista son: {pista_string}\nLa pista resultante es: {''.join(result)}")
-        return result_type
-    except Exception as error:
-        print("Exception: {}".format(error))
+        console.print(f"\nLos valores iniciales de la carrera son: [bold]{', '.join(self.runjump_list)}[/bold].\nLos valores iniciales de la pista son:[bold]{self.track_string}[/bold]\nLa pista resultante es: [bold]{''.join(result)}[/bold]")
+
+
+def main():
+    flag_run_jump = True
+    flag_track = True
+    runjump_list = list()
+    track_string = str()
+
+    while flag_run_jump:
+        input_string = Prompt.ask(
+            "\nIntroduzca una opción entre 'run' o 'jump', y presione ENTER. Si desea finalizar el ingreso de datos escriba 'YES' o 'Y' (q --> Exit)", choices=["run", "jump", "YES", "Y", "yes", "y", "q"], show_choices=False).lower()
+        if input_string == "q":
+            sys.exit("Proceso finalizado!")
+        elif input_string in ["YES", "Y", "yes", "y"]:
+            break
+        else:
+            runjump_list.append(input_string)
+
+    while flag_track:
+        input_string = Prompt.ask(
+            "\nIntroduzca una opción entre '_' (suelo) o '|' (valla), y presione ENTER. Si desea finalizar el ingreso de datos escriba 'YES' o 'Y' (q --> Exit)", choices=["_", "|", "YES", "Y", "yes", "y", "q"], show_choices=False).lower().rstrip().lstrip()
+        if input_string == "q":
+            sys.exit("Proceso finalizado!")
+        elif input_string in ["YES", "Y", "yes", "y"]:
+            break
+        else:
+            track_string += input_string
+
+    Race(runjump_list, track_string).checkRace()
 
 
 if __name__ == '__main__':
-    flag_continue = True
-    flag_run_jump = True
-    flag_pista = True
-    flag_stop = False
-    run_jump_list = list()
-    pista_string = str()
-
-    while flag_continue:
-        try:
-            # Obtener los inputs de run o jump ingresados por el usuario
-            while flag_run_jump:
-                input_string = input("Introduzca una opción entre 'run' o 'jump', y presione ENTER. Si desea finalizar el ingreso de datos escriba 'YES' o 'Y': \n").lower()
-
-                # Se eliminan los espacios en blanco al inicio y final de la cadena de texto ingresada
-                input_string = input_string.rstrip().lstrip()
-
-                if input_string != "" and input_string in ["run", "jump", "y", "yes"]:
-                    if input_string == "y" or "yes" in input_string:
-                        flag_run_jump = False
-                        flag_continue = False
-                    else:
-                        run_jump_list.append(input_string)
-                else:
-                    while True:
-                        opcion = input("No se introdujo un texto válido. Desea continuar? (Y/N)\n").lower()
-                        if opcion == "y" or "yes" in opcion:
-                            break
-                        elif opcion == "n" or "no" in opcion:
-                            flag_stop = True
-                            flag_run_jump = False
-                            flag_pista = False
-                            flag_continue = False
-                            break
-
-            # Obtener los inputs de _ o | ingresados por el usuario
-            while flag_pista:
-                input_string = input("Introduzca una opción entre '_' (suelo) o '|' (valla), y presione ENTER. Si desea finalizar el ingreso de datos escriba 'YES' o 'Y': \n").lower()
-
-                # Se eliminan los espacios en blanco al inicio y final de la cadena de texto ingresada
-                input_string = input_string.rstrip().lstrip()
-
-                if input_string != "" and input_string in ["_", "|", "?", "y", "yes"]:
-                    if input_string == "y" or "yes" in input_string:
-                        flag_pista = False
-                        flag_continue = False
-                    else:
-                        pista_string += input_string
-                else:
-                    while True:
-                        opcion = input("No se introdujo un texto válido. Desea continuar? (Y/N)\n").lower()
-                        if opcion == "y" or "yes" in opcion:
-                            break
-                        elif opcion == "n" or "no" in opcion:
-                            flag_stop = True
-                            flag_pista = False
-                            flag_continue = False
-                            break
-
-            if not flag_stop:
-                # Función para verificar si un/a atleta ha superado correctamente una carrera de obstáculos
-                result = checkRace(run_jump_list, pista_string)
-                print(f"El resultado es {result}")
-                break
-
-        except:
-            while True:
-                opcion = input("No se introdujo un texto válido. Desea continuar? (Y/N)\n").lower()
-                if opcion == "y" or "yes" in opcion:
-                    break
-                elif opcion == "n" or "no" in opcion:
-                    flag_continue = False
-                    break
+    typer.run(main)
