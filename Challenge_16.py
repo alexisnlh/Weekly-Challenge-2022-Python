@@ -1,5 +1,10 @@
+import sys
 import re
+import typer
+from rich.console import Console
+from rich.prompt import Prompt
 
+console = Console(color_system="windows")
 # Reto #16
 # En mayúscula
 # Fecha publicación enunciado: 18/04/22
@@ -10,15 +15,23 @@ import re
 # - No se pueden utilizar operaciones del lenguaje que lo resuelvan directamente.
 
 
-# Función para modificar el texto ingresado
-def capitalize(input_string):
-    try:
-        flag_first = False
+class Capitalize:
+    """
+        Modifica el texto ingresado
+    """
+
+    pattern = "[^A-zÀ-ú]"
+
+    def __init__(self, input_string):
+        self.input_string = input_string
+
+    def capitalize_process(self):
+        flag_first = True
         capitalizedText = list()
 
-        for letter in input_string:
+        for letter in self.input_string:
             # Comprueba si letter es una letra o símbolo/espacio
-            check = re.search("[^A-zÀ-ú]", letter, re.IGNORECASE)
+            check = re.search(self.__class__.pattern, letter, re.IGNORECASE)
             if not check:
                 # Si flag_first = True, cambia a mayúscula letter seleccionada y la almacena en la variable letter_modf, si no lo almacena en la variable letter_modf sin modificar
                 if flag_first:
@@ -31,39 +44,17 @@ def capitalize(input_string):
                 flag_first = True
             capitalizedText.append(letter_modf)
 
-        capitalizedText = "".join(capitalizedText)
-        return capitalizedText
-    except Exception as error:
-        print("Exception: {}".format(error))
+        console.print(f"El texto ingresado modificado es: [bold]{''.join(capitalizedText)}[/bold]")
+
+
+def main():
+    input_string = Prompt.ask("Introduzca el texto a procesar, y presione ENTER (q --> Exit)").rstrip().lstrip()
+    if input_string == "q":
+        sys.exit("Proceso finalizado!")
+
+    # Modifica el texto ingresado
+    Capitalize(input_string).capitalize_process()
 
 
 if __name__ == '__main__':
-    flag_continue = True
-    while flag_continue:
-        try:
-            input_string = input("Introduzca el texto a procesar, y presione ENTER: \n")
-
-            # Se eliminan los espacios en blanco al inicio y final de la cadena de texto ingresada
-            input_string = input_string.rstrip().lstrip()
-
-            if input_string != "":
-                # Función para modificar el texto ingresado
-                capitalizedText = capitalize(input_string)
-                print(f"El texto ingresado modificado es: {capitalizedText}")
-                break
-            else:
-                while True:
-                    opcion = input("No se introdujo un texto válido. Desea continuar? (Y/N)\n").lower()
-                    if opcion == "y" or "yes" in opcion:
-                        break
-                    elif opcion == "n" or "no" in opcion:
-                        flag_continue = False
-                        break
-        except:
-            while True:
-                opcion = input("No se introdujo un texto válido. Desea continuar? (Y/N)\n").lower()
-                if opcion == "y" or "yes" in opcion:
-                    break
-                elif opcion == "n" or "no" in opcion:
-                    flag_continue = False
-                    break
+    typer.run(main)
