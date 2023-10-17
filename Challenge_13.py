@@ -1,7 +1,7 @@
 import sys
 import typer
 from rich.console import Console
-from rich.prompt import FloatPrompt
+from rich.prompt import Prompt
 
 console = Console(color_system="windows")
 # Reto #13
@@ -32,13 +32,13 @@ class Factorial:
 
 
 def main():
-    input_number = FloatPrompt.ask("Introduzca el número para calcular el factorial, y presione ENTER (q --> Exit)")
+    input_number = Prompt.ask("Introduzca el número para calcular el factorial, y presione ENTER (q --> Exit)")
 
     if input_number == "q":
         sys.exit("Proceso finalizado!")
 
     # Calcular el factorial del número ingresado
-    result = Factorial(input_number).calculate_factorial()
+    result = Factorial(float(input_number)).calculate_factorial()
 
     if result is not None:
         console.print(
