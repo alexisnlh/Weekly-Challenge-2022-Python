@@ -19,15 +19,14 @@ class Fibonacci:
     """
         Función para imprimir los 50 primeros números de la sucesión de Fibonacci
     """
-    @staticmethod
-    def fibonacci_numbers():
-        num_0 = 0
-        num_1 = 1
-        for number in range(1, 51):
+    TOP_NUMBERS = 50
+
+    @classmethod
+    def fibonacci_numbers(cls):
+        num_0, num_1 = 0, 1
+        for _ in range(cls.TOP_NUMBERS + 1):
             console.print(num_0, style='bold purple')
-            num_next = num_0 + num_1
-            num_0 = num_1
-            num_1 = num_next
+            num_0, num_1 = num_1, num_0 + num_1
 
 
 if __name__ == '__main__':
